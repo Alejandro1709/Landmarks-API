@@ -2,9 +2,11 @@ import express from 'express'
 import morgan from 'morgan'
 import dotenv from 'dotenv'
 import { connectDB } from './config/db'
+import cors from 'cors'
 import landmarkRoutes from './routes/landmarkRoutes'
 import { globalErrorMiddleware } from './middlewares/error'
 import AppError from './utils/AppError'
+import { corsConfig } from './config/cors'
 
 dotenv.config()
 
@@ -13,6 +15,7 @@ connectDB()
 const app = express()
 
 app.use(express.json())
+app.use(cors(corsConfig))
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
