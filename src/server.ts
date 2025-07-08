@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import { connectDB } from './config/db'
 import landmarkRoutes from './routes/landmarkRoutes'
 import { globalErrorMiddleware } from './middlewares/error'
+import AppError from './utils/AppError'
 
 dotenv.config()
 
@@ -22,7 +23,7 @@ app.use('/api/v1/landmarks', landmarkRoutes)
 
 // Error middlewares
 app.use((req, res, next) => {
-  res.status(404).json({ message: 'This route does not exists' })
+  return next(new AppError('This route does not exists', 404))
 })
 
 app.use(globalErrorMiddleware)

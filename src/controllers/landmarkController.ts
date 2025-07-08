@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from 'express'
 import { createLandmarkSchema } from '../schemas/landmarkSchema'
 import Landmark from '../models/Landmark'
+import AppError from '../utils/AppError'
 
 export const getLandmarks = async (
   req: Request,
@@ -25,8 +26,7 @@ export const getLandmark = async (
     const landmark = await Landmark.findById(req.params.id)
 
     if (!landmark) {
-      res.status(404).json({ message: 'Landmark not found' })
-      return
+      return next(new AppError('This landmark does not exists', 404))
     }
 
     res.status(200).json(landmark)
@@ -41,14 +41,9 @@ export const createLandmark = async (
   next: NextFunction
 ) => {
   try {
-    const body = createLandmarkSchema.safeParse(req.body)
+    const body = createLandmarkSchema.parse(req.body)
 
-    if (!body.success) {
-      res.status(400).json({ errors: body.error.format() })
-      return
-    }
-
-    const landmark = new Landmark(body.data)
+    const landmark = new Landmark(body)
 
     await landmark.save()
 
