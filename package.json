@@ -12,10 +12,12 @@
   "author": "Alejandro La Rosa",
   "license": "ISC",
   "dependencies": {
+    "cloudinary": "^2.7.0",
     "colors": "^1.4.0",
     "cors": "^2.8.5",
     "dotenv": "^17.1.0",
     "express": "^5.1.0",
+    "formidable": "^3.5.4",
     "mongoose": "^8.16.2",
     "morgan": "^1.10.0",
     "zod": "^3.25.76"
