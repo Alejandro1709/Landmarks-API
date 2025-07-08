@@ -7,7 +7,13 @@ export const getLandmarks = async (
   res: Response,
   next: NextFunction
 ) => {
-  res.status(200).json({ message: 'Landmarks 🌏' })
+  try {
+    const landmarks = await Landmark.find()
+
+    res.status(200).json(landmarks)
+  } catch (error) {
+    next(error)
+  }
 }
 
 export const createLandmark = async (
