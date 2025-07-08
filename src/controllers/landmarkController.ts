@@ -16,6 +16,25 @@ export const getLandmarks = async (
   }
 }
 
+export const getLandmark = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const landmark = await Landmark.findById(req.params.id)
+
+    if (!landmark) {
+      res.status(404).json({ message: 'Landmark not found' })
+      return
+    }
+
+    res.status(200).json(landmark)
+  } catch (error) {
+    next(error)
+  }
+}
+
 export const createLandmark = async (
   req: Request,
   res: Response,
