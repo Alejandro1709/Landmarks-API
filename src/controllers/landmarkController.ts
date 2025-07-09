@@ -1,7 +1,8 @@
 import type { Request, Response, NextFunction } from 'express'
-import { createLandmarkSchema } from '../schemas/landmarkSchema'
 import Landmark from '../models/Landmark'
 import AppError from '../utils/AppError'
+import formidable from 'formidable'
+import cloudinary from '../config/cloudinary'
 
 export const getLandmarks = async (
   req: Request,
@@ -40,15 +41,36 @@ export const createLandmark = async (
   res: Response,
   next: NextFunction
 ) => {
-  try {
-    const body = createLandmarkSchema.parse(req.body)
+  const form = formidable({ multiples: false })
 
-    const landmark = new Landmark(body)
+  form.parse(req, async (err, fields, files) => {
+    if (err) return next(new AppError('Error while processing form', 500))
 
-    await landmark.save()
+    try {
+      const file = files.image[0]
 
-    res.status(201).json({ message: 'Landmark created 🌏' })
-  } catch (error) {
-    next(error)
-  }
+      if (!file || !file.filepath) {
+        return res
+          .status(400)
+          .json({ message: 'No se proporcionó ninguna imagen' })
+      }
+
+      const uploadResult = await cloudinary.uploader.upload(file.filepath, {
+        folder: 'landmarks',
+      })
+
+      const newLandmark = new Landmark({
+        title: fields.title[0],
+        latitude: +fields.latitude[0],
+        longitude: +fields.longitude[0],
+        image: uploadResult.secure_url,
+      })
+
+      await newLandmark.save()
+
+      return res.status(201).json({ message: 'Landmark created' })
+    } catch (error) {
+      return res.status(500).json({ message: 'Error creating landmark', error })
+    }
+  })
 }
