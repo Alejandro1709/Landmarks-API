@@ -6,7 +6,6 @@ import cors from 'cors'
 import landmarkRoutes from './routes/landmarkRoutes'
 import { globalErrorMiddleware } from './middlewares/error'
 import AppError from './utils/AppError'
-import { corsConfig } from './config/cors'
 
 dotenv.config()
 
@@ -15,7 +14,14 @@ connectDB()
 const app = express()
 
 app.use(express.json())
-app.use(cors(corsConfig))
+app.use(
+  cors({
+    origin: [
+      'https://landmarks-front-frsus5art-alejandro1709s-projects.vercel.app',
+    ],
+    credentials: true,
+  })
+)
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
