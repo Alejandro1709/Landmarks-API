@@ -18,6 +18,7 @@ app.use(
   cors({
     origin: [
       'https://landmarks-front-frsus5art-alejandro1709s-projects.vercel.app',
+      'http://localhost:5173',
     ],
     credentials: true,
   })
