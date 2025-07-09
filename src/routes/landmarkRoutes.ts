@@ -14,6 +14,6 @@ router.get('/:id', getLandmark)
 
 router.post('/', createLandmark)
 
-router.post('/image', uploadLandmarkImage)
+router.post('/:id/image', uploadLandmarkImage)
 
 export default router

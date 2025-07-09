@@ -4,6 +4,7 @@ export interface ILandmark extends Document {
   title: string
   latitude: number
   longitude: number
+  image: string
 }
 
 const landmarkSchema: Schema = new Schema(
@@ -24,6 +25,10 @@ const landmarkSchema: Schema = new Schema(
       required: true,
       min: -180,
       max: 180,
+    },
+    image: {
+      type: String,
+      required: true,
     },
   },
   {

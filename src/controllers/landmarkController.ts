@@ -65,7 +65,6 @@ export const uploadLandmarkImage = async (
     const form = formidable({ multiples: false })
 
     form.parse(req, (error, fields, files) => {
-      console.log(files)
       cloudinary.uploader.upload(
         files.file[0].filepath,
         { public_id: uuid() },
@@ -75,7 +74,17 @@ export const uploadLandmarkImage = async (
           }
 
           if (result) {
-            console.log(result)
+            const landmark = await Landmark.findById(req.params.id)
+
+            landmark.image = result.secure_url
+
+            if (!landmark) {
+              return next(new AppError('This Landmark does not exists', 404))
+            }
+
+            await landmark.save()
+
+            res.status(200).json({ image: result.secure_url })
           }
         }
       )
