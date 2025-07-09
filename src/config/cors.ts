@@ -5,7 +5,9 @@ dotenv.config()
 
 export const corsConfig: CorsOptions = {
   origin: function (origin, callback) {
-    const whitelist = [process.env.FRONTEND_URL]
+    const whitelist = [
+      'https://landmarks-front-frsus5art-alejandro1709s-projects.vercel.app',
+    ]
 
     if (whitelist.includes(origin)) {
       callback(null, true)
