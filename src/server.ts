@@ -16,10 +16,7 @@ const app = express()
 app.use(express.json())
 app.use(
   cors({
-    origin: [
-      'https://landmarks-front-frsus5art-alejandro1709s-projects.vercel.app',
-      'http://localhost:5173',
-    ],
+    origin: '*',
     credentials: true,
   })
 )
