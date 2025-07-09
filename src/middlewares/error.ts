@@ -39,7 +39,7 @@ export const globalErrorMiddleware: ErrorRequestHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  // console.log(err)
+  console.log(err)
 
   if (err.name === 'CastError') {
     handleMongoCastError(res, err)
@@ -61,5 +61,5 @@ export const globalErrorMiddleware: ErrorRequestHandler = (
     return
   }
 
-  res.status(500).json({ message: 'Internal Server Error', err })
+  res.status(500).json({ message: 'Internal Server Error' })
 }
