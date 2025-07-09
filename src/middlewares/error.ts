@@ -39,7 +39,7 @@ export const globalErrorMiddleware: ErrorRequestHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  //console.log(err)
+  // console.log(err)
 
   if (err.name === 'CastError') {
     handleMongoCastError(res, err)
